@@ -217,7 +217,8 @@
 ?>
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
   <title>LOLShell <?=$appVersion?></title>
   <meta name="description" content="LOLShell <?=$appVersion?> by Contra">
   <meta name="author" content="Contra">
@@ -233,6 +234,15 @@
                 $("#mysql-accordion").accordion({ collapsible: true });
                 $("#navtabs").tabs();
         });
+  </script>
+  <script> //MySQL Connection. I have used a bit of jquery to avoid page refreshes and get quick responses.
+  $("#mysql_connect_form").live( "submit" , function(){
+    var formdata = $(this).serialize(); 
+    $.post( "base.php", formdata, function( data ) {
+        $(".display_connection_result").html(data);
+    });
+    return false; 
+  });
   </script>
 </head>
 <body bgcolor="black">
@@ -282,14 +292,25 @@
     <center><iframe src="browse.php" height="60%" width="90%" frameBorder="0"></iframe></center>
   </div>
   <div id="mysql">
+	<form id="mysql_connect_form" action="" method="POST">
+	<label>Host</label>
+       <input type="text" name="mysql_host" placeholder="127.0.0.1" />
+	<label>Username</label>
+	<input type="text" name="mysql_user" placeholder="Enter username for MySQL" />
+	<label>Password</label>
+	<input type="text" name="mysql_pass" placeholder="Enter password for MySQL" />
+	<input id="mysql_connect" type="submit" name="submit" value="Connect!" />
+	</form>
     <div id="mysql-accordion">
       <h3><a href="#">Browse</a></h3>
-        <div>MySQL Browser here</div>
+        <div>
+	<div style="height:600px;" class="display_connection_result"></div>
+	</div>
       <h3><a href="#">Dump</a></h3>
         <div>MySQL Dumper here</div>
       <h3><a href="#">Query</a></h3>
         <div>MySQL Query here
-       
+	
         </div>
        
     </div>
